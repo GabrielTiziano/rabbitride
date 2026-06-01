@@ -1,4 +1,6 @@
 # rabbitride
+
+[![CI](https://github.com/GGhiaroni/rabbitride/actions/workflows/ci.yml/badge.svg)](https://github.com/GGhiaroni/rabbitride/actions/workflows/ci.yml)
 Sistema de aluguel de carros event-driven com Spring Boot, microsserviços e RabbitMQ
 
 ## Configuração local
