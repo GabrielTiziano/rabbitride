@@ -1,5 +1,6 @@
 package com.gghiaroni.rabbitride.carservice.exception;
 
+import com.gghiaroni.rabbitride.carservice.car.exception.CarroNotAvailableException;
 import com.gghiaroni.rabbitride.carservice.car.exception.CarroNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,5 +52,10 @@ public class GlobalExceptionHandler {
         pd.setType(BASE_ERROR_URI.resolve(type));
         pd.setProperty("timestamp", Instant.now());
         return pd;
+    }
+
+    @ExceptionHandler(CarroNotAvailableException.class)
+    public ProblemDetail handleCarroNotAvailable(CarroNotAvailableException ex) {
+        return build(HttpStatus.CONFLICT, "Carro indisponível", ex.getMessage(), "carro-not-available");
     }
 }
