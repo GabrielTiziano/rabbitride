@@ -78,4 +78,24 @@ public class RabbitTopologyConfig {
             .to(rentalExchange)
             .with(RoutingKeys.RENTAL_FAILED);
     }
+
+    //dead letter exchange + queue
+    @Bean
+    public TopicExchange rentalDeadLetterExchange() {
+        return new TopicExchange(Exchanges.RENTAL_DLX, true, false);
+    }
+
+    @Bean
+    public Queue rentalDeadLetterQueue() {
+        return QueueBuilder.durable(Queues.RENTAL_DLQ).build();
+        // Nota: DLQ NÃO tem x-dead-letter-exchange — ela é o destino final
+    }
+
+    @Bean
+    public Binding rentalDeadLetterBinding(Queue rentalDeadLetterQueue, TopicExchange rentalDeadLetterExchange) {
+        return BindingBuilder
+            .bind(rentalDeadLetterQueue)
+            .to(rentalDeadLetterExchange)
+            .with("#");   // ← captura QUALQUER routing key
+    }
 }
