@@ -48,7 +48,7 @@ class RentalServiceTest {
     @InjectMocks private RentalService rentalService;
 
     private final AuthenticatedUser user = new AuthenticatedUser(
-        UUID.randomUUID(), "gabriel@test.com", "Gabriel");
+        UUID.randomUUID(), "gabriel@test.com", "Gabriel", "52998224725");
 
     @Test
     @DisplayName("criar: salva rental como PENDENTE e publica RentalRequested")

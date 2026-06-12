@@ -23,6 +23,10 @@ public class UserPrincipal implements UserDetails {
         return user.getEmail();
     }
 
+    public String getCpf() {
+        return user.getCpf();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();

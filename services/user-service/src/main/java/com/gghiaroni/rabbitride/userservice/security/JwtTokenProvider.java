@@ -33,6 +33,7 @@ public class JwtTokenProvider {
             .withSubject(principal.getEmail())
             .withClaim("userId", principal.getId().toString())
             .withClaim("name", principal.getNome())
+            .withClaim("cpf", principal.getCpf())
             .withIssuedAt(agora)
             .withExpiresAt(expira)
             .sign(algorithm);

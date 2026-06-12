@@ -71,6 +71,7 @@ public class RentalService {
             salvo.getId(),
             user.id(),
             user.email(),
+            user.cpf(),
             request.carroId()
         );
 

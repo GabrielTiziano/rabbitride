@@ -28,7 +28,8 @@ public class JwtTokenValidator {
         return new AuthenticatedUser(
             UUID.fromString(decoded.getClaim("userId").asString()),
             decoded.getSubject(),
-            decoded.getClaim("name").asString()
+            decoded.getClaim("name").asString(),
+            decoded.getClaim("cpf").asString()
         );
     }
 }
