@@ -51,3 +51,10 @@ logging:
   level:
     com.gghiaroni.rabbitride: DEBUG
     org.springframework.web: INFO
+
+app:
+  retry:
+    max-attempts: 3
+    initial-interval-ms: 1000
+    multiplier: 2.0
+    max-interval-ms: 10000
