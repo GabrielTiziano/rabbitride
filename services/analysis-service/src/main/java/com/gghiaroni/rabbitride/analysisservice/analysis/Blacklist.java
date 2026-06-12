@@ -27,4 +27,9 @@ public class Blacklist {
     @CreationTimestamp
     @Column(name = "criado_em", nullable = false, updatable = false)
     private Instant criadoEm;
+
+    public Blacklist(String cpf, String motivo) {
+        this.cpf = cpf;
+        this.motivo = motivo;
+    }
 }
