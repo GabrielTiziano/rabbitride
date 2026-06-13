@@ -8,11 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Component
 public class RentalFailedConsumer {
 
     private static final Logger log = LoggerFactory.getLogger(RentalFailedConsumer.class);
     private static final String CONSUMER_NAME = "notification-service.RentalFailedConsumer";
+    private static final String TEMPLATE = "email/rental-failed";
 
     private final EmailSender emailSender;
 
@@ -25,30 +28,14 @@ public class RentalFailedConsumer {
         log.info("Recebido RentalFailed: eventId={}, rentalId={}, userEmail={}, motivo={}",
             event.eventId(), event.rentalId(), event.userEmail(), event.motivo());
 
-        String subject = "Não foi possível confirmar sua reserva";
-        String body = montarCorpo(event);
-
-        emailSender.send(event.userEmail(), subject, body);
-    }
-
-    private String montarCorpo(RentalFailedEvent event) {
-        return String.format("""
-            Olá,
-
-            Infelizmente não foi possível confirmar sua reserva.
-
-            Detalhes:
-              ID da reserva: %s
-              Motivo: %s
-
-            Você pode tentar uma nova reserva quando preferir.
-
-            Se tiver dúvidas, entre em contato com nosso suporte.
-
-            Equipe RabbitRide
-            """,
-            event.rentalId(),
-            event.motivo()
+        emailSender.sendHtml(
+            event.userEmail(),
+            "Não foi possível confirmar sua reserva",
+            TEMPLATE,
+            Map.of(
+                "rentalId", event.rentalId(),
+                "motivo", event.motivo()
+            )
         );
     }
 }

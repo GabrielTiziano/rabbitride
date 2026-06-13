@@ -8,10 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Component
 public class RentalConfirmedConsumer {
+
     private static final Logger log = LoggerFactory.getLogger(RentalConfirmedConsumer.class);
     private static final String CONSUMER_NAME = "notification-service.RentalConfirmedConsumer";
+    private static final String TEMPLATE = "email/rental-confirmed";
 
     private final EmailSender emailSender;
 
@@ -24,28 +28,14 @@ public class RentalConfirmedConsumer {
         log.info("Recebido RentalConfirmed: eventId={}, rentalId={}, userEmail={}",
             event.eventId(), event.rentalId(), event.userEmail());
 
-        String subject = "Sua reserva foi confirmada";
-        String body = montarCorpo(event);
-
-        emailSender.send(event.userEmail(), subject, body);
-    }
-
-    private String montarCorpo(RentalConfirmedEvent event) {
-        return String.format("""
-            Olá!
-
-            Sua reserva foi confirmada com sucesso.
-
-            Detalhes:
-              ID da reserva: %s
-              Carro: %s
-
-            Em breve enviaremos informações sobre a retirada.
-
-            Equipe RabbitRide
-            """,
-            event.rentalId(),
-            event.carroDescricao()
+        emailSender.sendHtml(
+            event.userEmail(),
+            "Sua reserva foi confirmada",
+            TEMPLATE,
+            Map.of(
+                "rentalId", event.rentalId(),
+                "carroDescricao", event.carroDescricao()
+            )
         );
     }
 }
